@@ -1,0 +1,115 @@
+<link href="/css/carousel.css" rel="stylesheet" type="text/css">
+
+<div class="carousel-container">
+    <div class="carousel-inner">
+      <div class="track">
+            <% for(var i = 0; i <movie.length; i++){%> 
+                <div class="card-container">
+                    <div class="card ">
+                        <div class="img " style="background-image:url('<%= movie[i].image %>');background-size: cover;"></div>
+                        <a class="btn-primary" href="/api/v1/movies/delete/<%= movie[i].id %>"><button class="btn">Supprimer</button></a>
+                        <a class="btn-primary"><button class="btn-edit" onclick="handleClick(<%= movie[i].id %>)">Éditer</button></a>
+                        <div class="info">
+                            <strong><%= movie[i].name %> </strong>- <%= movie[i].duration %> minutes
+                        </div>
+                    </div>
+                </div>
+                <div id="form_<%= movie[i].id %>" class="hide">
+                  <form action="/api/v1/movies/<%= movie[i].id %>" method="post" autocomplete="off">
+                    <div><%= movie[i].id %></div>
+                    <div>
+                        <label for="name">Nom :</label>
+                        <input type="text" id="name" name="name" value="<%= movie[i].name %>">
+                    </div>
+                    <div>
+                        <label for="genre">Genre :</label>
+                        <input type="text" id="genre" name="genre" value="<%= movie[i].genre %>">
+                    </div>
+                    <div>
+                        <label for="duration">Duration :</label>
+                        <input type="text" id="duration" name="duration" value="<%= movie[i].duration %>">
+                    </div>
+                    <div>
+                        <label for="release_date">Release date :</label>
+                        <div><%= movie[i].release_date_day%></div>
+                        <input id="release_date" name="release_date" value="<%= movie[i].release_date_day %>">
+                    </div>
+                    <div>
+                        <label for="image">URL image :</label>
+                        <input type="text" id="image" name="image" value="<%= movie[i].image %>">
+                    </div>
+                    <div>
+                        <button type="submit">Éditer le film</button>
+                    </div>
+                  </form>
+                </div>
+            <%}%>
+        </div>
+    </div>
+    <div class="nav">
+        <button class="prev">
+            <i class="material-icons">
+            keyboard_arrow_left
+            </i>
+        </button>
+        <button class="next">
+            <i class="material-icons">
+            keyboard_arrow_right
+            </i>
+        </button>
+    </div>
+</div>
+
+<script>
+const prev  = document.querySelector('.prev');
+const next = document.querySelector('.next');
+const btn_edit = document.querySelector('.btn-edit')
+const form_update = document.querySelector('#form_update')
+
+const track = document.querySelector('.track');
+
+let carouselWidth = document.querySelector('.carousel-container').offsetWidth;
+
+window.addEventListener('resize', () => {
+  carouselWidth = document.querySelector('.carousel-container').offsetWidth;
+})
+
+let index = 0;
+
+next.addEventListener('click', () => {
+  index++;
+  prev.classList.add('show');
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+  
+  if (track.offsetWidth - (index * carouselWidth) < carouselWidth) {
+    next.classList.add('hide');
+  }
+})
+
+prev.addEventListener('click', () => {
+  index--;
+  next.classList.remove('hide');
+  if (index === 0) {
+    prev.classList.remove('show');
+  }
+  track.style.transform = `translateX(-${index * carouselWidth}px)`;
+})
+
+function handleClick(id) {
+  const form = document.querySelector('#form_'+id)
+  if(index===0){
+    form.classList.add('show')
+    index++;
+  } else {
+    form.classList.remove('show')
+    index--;
+  }
+  
+
+
+}
+
+
+
+
+</script>

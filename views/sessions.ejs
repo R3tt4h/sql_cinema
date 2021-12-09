@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/all.css" rel="stylesheet" type="text/css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Mes séances</h1>
+    <ul class="ul_list">
+        <% for (var i=0; i<session.length; i++){ %>
+            <strong>Session <%= session[i].id %></strong>
+            <li>
+                Jour: <%= session[i].session_day %>,</br>
+                Heure: <%= session[i].session_hour %>,</br>
+                Film:  <%= session[i].movie_id %>,</br>
+                Salle: <%= session[i].room_id %></br>
+                Places disponibles: <%= session[i].nb_available_place %></br>
+
+                <a href="/api/v1/sessions/delete/<%= session[i].id %>">X</a>
+            </li>
+            </br>
+        <% } %>
+    </ul>
+    <form action="/api/v1/sessions" method="post" autocomplete="off">
+        <div>
+            <label for="hour">Heure :</label>
+            <input type="text" id="hour" name="hour" placeholder="hh:mm">
+        </div>
+        <div>
+            <label for="movie">Film:</label>
+            <select name="movie_id" id="movie_id">
+                <option value="">--choose a movie--</option>
+                <% for (var i=0; i<movie.length; i++){ %> 
+                    <option value="<%= movie[i].id %>"> <%= movie[i].name %> </option>
+                <% } %>
+            </select>
+        </div>
+        <div>
+            <label for="room">Salle:</label>
+            <select name="room_id" id="room_id">
+                <option value="">--choose a room--</option>
+                <% for (var i=0; i<room.length; i++){ %> 
+                    <option value="<%= room[i].id %>"> <%= room[i].name %> </option>
+                <% } %>
+            </select>
+        </div>
+        <div>
+            <label for="session_date">Date:</label>
+            <input type="date" id="session_date" name="session_date">
+        </div>
+        <div>
+            <button type="submit">Ajoutez une séance</button>
+        </div>
+    </form>
+    <a href="/">Retour à la page d'accueil</a>
+</body>
+</html>
